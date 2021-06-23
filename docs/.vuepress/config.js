@@ -27,6 +27,12 @@ module.exports = {
           ['/vue3/lifehooks', '生命周期'],
           ['/vue3/setup', 'setup']
         ]
+      },
+      {
+        title: 'knowledge',
+        children: [
+          ['/interview/cookie_session_token', 'cookie,session,token']
+        ]
       }
     ]
   }
