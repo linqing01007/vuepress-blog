@@ -4,6 +4,7 @@ module.exports = {
   head: [
     ["meta", {name: "author", content: "林晴"}]
   ],
+  theme: 'yuu',
   themeConfig: {
     // nav: [
     //   {
@@ -26,6 +27,15 @@ module.exports = {
         children: [
           ['/vue3/lifehooks', '生命周期'],
           ['/vue3/setup', 'setup']
+        ]
+      },
+      {
+        title: 'es6',
+        // path: '/vue3',
+        // collapsable: false,
+        children: [
+          ['/es6/异步编程', '异步编程'],
+          ['/es6/你不知道的js', '你不知道的js']
         ]
       }
     ]
