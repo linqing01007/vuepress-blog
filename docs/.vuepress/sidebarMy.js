@@ -4,6 +4,9 @@ const glob = require('glob')
 const { join, normalize, sep } = require('path')
 const path = require('path')
 const fs = require('fs')
+const markdownIt = require('markdown-it')
+const meta = require('markdown-it-meta')
+const sortBy = require('lodash.sortby')
 
 const getDirectories = function (dir) {
   return fs.readdirSync(dir).filter(name => !(name === '.vuepress') && fs.lstatSync(join(dir, name)).isDirectory())
@@ -26,10 +29,23 @@ const getChildren = function (parentPath, subDir, recursive = true) {
   // console.log('33333333333', files, `${parentPath}/${subDir ? subDir : ''}${pattern}`)
   files = files.map(path => {
     // console.log('2222222222', path)
+    let md = new markdownIt()
+    md.use(meta)
+    let file = fs.readFileSync(path, 'utf8')
+    md.render(file)
+    order = md.meta.order || 1
+    console.log('>>>>>>>>>>>meta: ', path, md.meta)
     path = path.slice(parentPath.length + 1, -3)
-    return [path, getName(path)]
+    return {
+      path,
+      order: path === '' ? 0 : order,
+      name: getName(path)
+    }
   })
-  return files
+  return sortBy(files, ['order', 'path']).map(file => {
+    console.log('after sortBy: ', file)
+    return [file.path, file.name]
+  })
 
 }
 
@@ -47,7 +63,7 @@ const side = function (baseDir, {
   navPrefix
 } = {}, relativeDir = '', currentLevel = 1) {
   const fileLinks = getChildren(baseDir, relativeDir, currentLevel > maxLevel)
-  console.log('1111111111', baseDir, relativeDir, fileLinks)
+  // console.log('1111111111', baseDir, relativeDir, fileLinks)
   if (currentLevel <= maxLevel) {
     getDirectories(join(baseDir, relativeDir)).filter(subDir => !subDir.startsWith(navPrefix)).forEach(subDir => {
       const children = side(baseDir, { maxLevel, navPrefix }, join(relativeDir, subDir), currentLevel + 1)
@@ -71,6 +87,18 @@ const options = {
 }
 let fileLinks = side(root, options)
 fileLinks.shift()
+console.log('fileLinks: ', fileLinks)
+/*
+fileLinsk:
+[
+  { title: 'interview', children: [
+    [ 'interview/cookie_session_token', 'cookie_session_token' ],
+    [ 'interview/跨域', '跨域' ]
+  ] },
+  { title: 'vue3', children: [ [ 'vue3/lifehooks', 'lifehooks' ], [ 'vue3/setup', 'setup' ] ] }
+]
+
+*/
 for (let item of fileLinks) {
   console.log('>>>>>>>>>>', item)
 }
