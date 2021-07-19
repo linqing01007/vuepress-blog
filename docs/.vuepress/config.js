@@ -8,9 +8,16 @@ const options = {
   skipEmptySidebar: true,
   setHomepage: true
 }
-sidebar = side(root, options)
-sidebar.shift()
+let sidebar = side(root, options)
+// sidebar.shift()
 // console.log('>>>>>>>>>sidebar: ', sidebar)
+// sidebar = [
+//   { title: 'interview', children: [
+//     [ 'interview/cookie_session_token', 'cookie_session_token' ],
+//     [ 'interview/跨域', '跨域' ]
+//   ] },
+//   { title: 'vue3', children: [ [ 'vue3/lifehooks', 'lifehooks' ], [ 'vue3/setup', 'setup' ] ] }
+// ]
 module.exports = {
   title: "林晴的博客",
   description: "林晴的个人博客",

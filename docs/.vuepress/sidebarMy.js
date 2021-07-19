@@ -7,6 +7,7 @@ const fs = require('fs')
 const markdownIt = require('markdown-it')
 const meta = require('markdown-it-meta')
 const sortBy = require('lodash.sortby')
+const { encode } = require('punycode')
 
 const getDirectories = function (dir) {
   return fs.readdirSync(dir).filter(name => !(name === '.vuepress') && fs.lstatSync(join(dir, name)).isDirectory())
@@ -27,19 +28,20 @@ const getChildren = function (parentPath, subDir, recursive = true) {
   const pattern = recursive ? "/**/*.md" : "/*.md"
   let files = glob.sync(`${parentPath}/${subDir ? subDir : ''}${pattern}`)
   // console.log('33333333333', files, `${parentPath}/${subDir ? subDir : ''}${pattern}`)
-  files = files.map(path => {
+  files = files.filter(path => !(/README|readme/.test(path))).map(path => {
     // console.log('2222222222', path)
     let md = new markdownIt()
     md.use(meta)
     let file = fs.readFileSync(path, 'utf8')
     md.render(file)
-    order = md.meta.order || 1
-    console.log('>>>>>>>>>>>meta: ', path, md.meta)
+    let order = md.meta.order || 1
+    let name = md.meta.title
+    // console.log('>>>>>>>>>>>meta: ', path, md.meta)
     path = path.slice(parentPath.length + 1, -3)
     return {
       path,
       order: path === '' ? 0 : order,
-      name: getName(path)
+      name: name || getName(path)
     }
   })
   return sortBy(files, ['order', 'path']).map(file => {
@@ -63,7 +65,7 @@ const side = function (baseDir, {
   navPrefix
 } = {}, relativeDir = '', currentLevel = 1) {
   const fileLinks = getChildren(baseDir, relativeDir, currentLevel > maxLevel)
-  // console.log('1111111111', baseDir, relativeDir, fileLinks)
+  console.log('1111111111', baseDir, relativeDir, fileLinks)
   if (currentLevel <= maxLevel) {
     getDirectories(join(baseDir, relativeDir)).filter(subDir => !subDir.startsWith(navPrefix)).forEach(subDir => {
       const children = side(baseDir, { maxLevel, navPrefix }, join(relativeDir, subDir), currentLevel + 1)
@@ -86,7 +88,7 @@ const options = {
   setHomepage: true
 }
 let fileLinks = side(root, options)
-fileLinks.shift()
+// fileLinks.shift()
 console.log('fileLinks: ', fileLinks)
 /*
 fileLinsk:
