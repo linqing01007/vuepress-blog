@@ -7,7 +7,7 @@ const fs = require('fs')
 const markdownIt = require('markdown-it')
 const meta = require('markdown-it-meta')
 const sortBy = require('lodash.sortby')
-const { encode } = require('punycode')
+// const { encode } = require('punycode')
 
 const getDirectories = function (dir) {
   return fs.readdirSync(dir).filter(name => !(name === '.vuepress') && fs.lstatSync(join(dir, name)).isDirectory())

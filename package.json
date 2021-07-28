@@ -13,5 +13,9 @@
   "devDependencies": {
     "vuepress": "^1.8.2",
     "vuepress-plugin-autobar": "github:boboidream/vuepress-bar"
+  },
+  "dependencies": {
+    "markdown-it": "^12.1.0",
+    "markdown-it-meta": "0.0.1"
   }
 }
