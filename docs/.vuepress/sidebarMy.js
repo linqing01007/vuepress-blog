@@ -14,9 +14,9 @@ const getDirectories = function (dir) {
 }
 
 
-const getName = function (dir, { navPrefix } = {}) {
-  let name = normalize(dir).split(sep).pop()
-  return name
+const getTitle = function (dir, { navPrefix } = {}) {
+  let title = normalize(dir).split(sep).pop()
+  return title
 }
 
 
@@ -27,21 +27,18 @@ const getChildren = function (parentPath, subDir, recursive = true) {
   parentPath = parentPath.endsWith(sep) ? parentPath.slice(0, -1) : parentPath
   const pattern = recursive ? "/**/*.md" : "/*.md"
   let files = glob.sync(`${parentPath}/${subDir ? subDir : ''}${pattern}`)
-  // console.log('33333333333', files, `${parentPath}/${subDir ? subDir : ''}${pattern}`)
   files = files.filter(path => !(/README|readme/.test(path))).map(path => {
-    // console.log('2222222222', path)
     let md = new markdownIt()
     md.use(meta)
     let file = fs.readFileSync(path, 'utf8')
     md.render(file)
     let order = md.meta.order || 1
-    let name = md.meta.title
-    // console.log('>>>>>>>>>>>meta: ', path, md.meta)
+    let title = md.meta.title
     path = path.slice(parentPath.length + 1, -3)
     return {
       path,
       order: path === '' ? 0 : order,
-      name: name || getName(path)
+      title: title || getTitle(path)
     }
   })
   return sortBy(files, ['order', 'path']).map(file => {
@@ -65,7 +62,6 @@ const side = function (baseDir, {
   navPrefix
 } = {}, relativeDir = '', currentLevel = 1) {
   const fileLinks = getChildren(baseDir, relativeDir, currentLevel > maxLevel)
-  console.log('1111111111', baseDir, relativeDir, fileLinks)
   if (currentLevel <= maxLevel) {
     getDirectories(join(baseDir, relativeDir)).filter(subDir => !subDir.startsWith(navPrefix)).forEach(subDir => {
       const children = side(baseDir, { maxLevel, navPrefix }, join(relativeDir, subDir), currentLevel + 1)
