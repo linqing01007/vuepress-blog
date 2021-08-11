@@ -43,7 +43,7 @@ const getChildren = function (parentPath, subDir, recursive = true) {
   })
   return sortBy(files, ['order', 'path']).map(file => {
     console.log('after sortBy: ', file)
-    return [file.path, file.name]
+    return [file.path, file.title]
   })
 
 }
