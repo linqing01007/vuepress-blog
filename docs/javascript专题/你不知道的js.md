@@ -92,7 +92,7 @@ js中的异步通过事件轮询来实现，每当有一个代码块要执行时
 异步编程时过多使用回调会陷入“回调地狱”，容易使代码变得难以理解和维护(如果修改了某一个回调，可能上下层的回调都要跟着改)，重要的是，如果把你的回调函数传给第三方库，如axios等，你无法保证你的回调函数一定会被调用或者只调用一次，再者，如果回调函数失败了，无法进行重试；
 
 axios不支持finally的解决方法：
-1 在Promise的原型链上添加finally实现
+在Promise的原型链上添加finally实现
 ```javascript
 Promise.prototype.finally = function (callback) {
 	let P = this.constructor;
