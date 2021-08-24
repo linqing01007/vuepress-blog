@@ -24,10 +24,10 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-versiont: "14.x"
+          node-version: "14.x"
       # 缓存node_modules，用于加速node的后续的构建 
       - name: Cache node modules
-        uses: actions/@cache@v1
+        uses: actions/cache@v1
         id: cache
         with:
           path: node_nodules
