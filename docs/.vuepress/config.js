@@ -21,8 +21,9 @@ let sidebar = side(root, options)
 module.exports = {
   title: "林晴的博客",
   description: "林晴的个人博客",
+  base: '/vuepress-blog/',
   head: [
-    ["meta", {name: "author", content: "林晴"}]
+    ["meta", { name: "author", content: "林晴" }]
   ],
   // plugins: ['autobar']
   themeConfig: {
