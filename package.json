@@ -15,6 +15,7 @@
     "vuepress-plugin-autobar": "github:boboidream/vuepress-bar"
   },
   "dependencies": {
+    "lodash": "^4.17.21",
     "markdown-it": "^12.1.0",
     "markdown-it-meta": "0.0.1"
   }

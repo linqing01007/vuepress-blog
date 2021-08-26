@@ -6,7 +6,10 @@ const path = require('path')
 const fs = require('fs')
 const markdownIt = require('markdown-it')
 const meta = require('markdown-it-meta')
-const sortBy = require('lodash.sortby')
+const orderBy = require('lodash').orderBy
+const priorityConfig = require('./priorityConfig')
+// const css = 'css'
+// console.log('>>>>>>>>>>>', priorityConfig.get(css))
 // const { encode } = require('punycode')
 
 const getDirectories = function (dir) {
@@ -61,8 +64,8 @@ const getChildren = function (parentPath, subDir, recursive = true) {
       title: title || getTitle(path)
     }
   })
-  return sortBy(files, ['order', 'path']).map(file => {
-    // console.log('after sortBy: ', file)
+  return orderBy(files, ['order', 'path']).map(file => {
+    // console.log('after orderBy: ', file)
     return [file.path, file.title]
   })
 
@@ -83,23 +86,23 @@ const side = function (baseDir, {
 } = {}, relativeDir = '', currentLevel = 1) {
   const fileLinks = getChildren(baseDir, relativeDir, currentLevel > maxLevel)
   // if (fs.lstatSync(join(baseDir, relativeDir, 'README.md')).isFile)
-  const order = getParamsInMd(join(baseDir, relativeDir, 'README.md'), 'order') || 99
-  console.log('>>>>>>>>>>>>>.', join(baseDir, relativeDir), order)
+
+  // console.log('>>>>>>>>>>>>>.', join(baseDir, relativeDir), order)
   if (currentLevel <= maxLevel) {
     getDirectories(join(baseDir, relativeDir)).filter(subDir => !subDir.startsWith(navPrefix)).forEach(subDir => {
       const children = side(baseDir, { maxLevel, navPrefix }, join(relativeDir, subDir), currentLevel + 1)
+      const priority = priorityConfig.get(subDir) || 0
       if (children.length > 0) {
-        console.log('222222222222', baseDir, join(relativeDir, subDir),  order)
         fileLinks.push({
           title: subDir,
           children,
-          order
+          priority
         })
       }
     })
   }
   // console.log('2222222222', fileLinks)
-  return fileLinks
+  return orderBy(fileLinks, ['priority'])
 }
 const root = path.dirname(__dirname)
 const options = {
@@ -109,7 +112,7 @@ const options = {
   skipEmptySidebar: true,
   setHomepage: true
 }
-let fileLinks = sortBy(side(root, options), ['order'])
+let fileLinks = orderBy(side(root, options), ['priority'], ['desc'])
 // fileLinks.shift()
 
 /*
@@ -124,6 +127,7 @@ fileLinsk:
 
 */
 for (let item of fileLinks) {
-  console.log('>>>>>>>>>>', item)
+  // console.log('>>>>>>>>>>', item)
 }
-module.exports = side
+
+module.exports = fileLinks

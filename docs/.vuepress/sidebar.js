@@ -2,7 +2,7 @@
 
 
 
-const sortBy = require("lodash.sortby");
+const sortBy = require("lodash.orderby");
 const glob = require("glob");
 const markdownIt = require("markdown-it");
 const meta = require("markdown-it-meta");
@@ -37,7 +37,7 @@ function getName(dir, { navPrefix, stripNumbers } = {}) {
 }
 
 // Load all MD files in a specified directory and order by metadata 'order' value
-const getChildren = function(parent_path, dir, recursive = true) {
+const getChildren = function (parent_path, dir, recursive = true) {
   // CREDITS: https://github.com/benjivm (from: https://github.com/vuejs/vuepress/issues/613#issuecomment-495751473)
   parent_path = normalize(parent_path);
   parent_path = parent_path.endsWith(sep) ? parent_path.slice(0, -1) : parent_path; // Remove last / if exists.
@@ -298,7 +298,7 @@ function getConfig(
 function translitePinyin(navArr) {
   navArr.map(nav => {
     if (nav.link) {
-      nav.link = slugify(nav.link, {ignore: ['/', '.']})
+      nav.link = slugify(nav.link, { ignore: ['/', '.'] })
     }
     if (nav.items) {
       translitePinyin(nav.items)
@@ -306,12 +306,12 @@ function translitePinyin(navArr) {
   })
 }
 
-function plugin (options, ctx) {
+function plugin(options, ctx) {
   return {
     async ready() {
-      const {themeConfig} = ctx.getSiteData ? ctx.getSiteData() : ctx;
-      const {rootDir = ctx.sourceDir} = options;
-      const {nav, sidebar} = await getConfig(rootDir, options);
+      const { themeConfig } = ctx.getSiteData ? ctx.getSiteData() : ctx;
+      const { rootDir = ctx.sourceDir } = options;
+      const { nav, sidebar } = await getConfig(rootDir, options);
 
       if (options.pinyinNav && nav.length) {
         translitePinyin(nav);
@@ -325,7 +325,7 @@ function plugin (options, ctx) {
 
       themeConfig.sidebar = sidebar;
       console.log('...............autobar: ', ctx, sidebar)
-      return {nav, sidebar};
+      return { nav, sidebar };
     }
   }
 }

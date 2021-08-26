@@ -1,0 +1,23 @@
+{
+  // 使用 IntelliSense 了解相关属性。 
+  // 悬停以查看现有属性的描述。
+  // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch sidebar",
+      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["${workspaceFolder}/docs/.vuepress/sidebarMy.js"],
+      "console": "integratedTerminal",
+      "protocol": "auto",
+      "restart": true,
+      // "program": "${workspaceFolder}/.vuepress/sidebar.js",
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node"
+    }
+  ]
+}

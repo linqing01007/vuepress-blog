@@ -1,14 +1,6 @@
-const side = require('./sidebarMy')
+const sidebar = require('./sidebarMy')
 const path = require('path')
 const root = path.dirname(__dirname)
-const options = {
-  stripNumbers: true,
-  maxLevel: 2,
-  navPrefix: 'nav',
-  skipEmptySidebar: true,
-  setHomepage: true
-}
-let sidebar = side(root, options)
 // sidebar.shift()
 // console.log('>>>>>>>>>sidebar: ', sidebar)
 // sidebar = [
@@ -27,7 +19,7 @@ module.exports = {
   ],
   // plugins: ['autobar']
   themeConfig: {
-    sidebar: sidebar
+    sidebar
   }
 
 }
