@@ -37,6 +37,16 @@ const getParamsInMd = function (path, key) {
   }
 }
 
+const getSecondPriorityConfig = function (path) {
+  // 获取二级标题的排序优先级配置
+  try {
+    const config = require(path)
+    return config
+  } catch (e) {
+    return null
+  }
+}
+
 const getTitle = function (dir, { navPrefix } = {}) {
   let title = normalize(dir).split(sep).pop()
   return title
@@ -47,26 +57,31 @@ const getTitle = function (dir, { navPrefix } = {}) {
 // 返回可用于themeConfig.sidebar的children选项[path, 'sidebarName']
 const getChildren = function (parentPath, subDir, recursive = true) {
   parentPath = normalize(parentPath)
+  const priorityConfig = getSecondPriorityConfig(join(parentPath, subDir, 'priorityConfig.js'))
   parentPath = parentPath.endsWith(sep) ? parentPath.slice(0, -1) : parentPath
   const pattern = recursive ? "/**/*.md" : "/*.md"
   let files = glob.sync(`${parentPath}/${subDir ? subDir : ''}${pattern}`)
   files = files.filter(path => !(/README|readme/.test(path))).map(path => {
+    let file = fs.readFileSync(path, 'utf8')
+    path = path.slice(parentPath.length + 1, -3)
     let md = new markdownIt()
     md.use(meta)
-    let file = fs.readFileSync(path, 'utf8')
     md.render(file)
-    let order = md.meta.order || 1
-    let title = md.meta.title
-    path = path.slice(parentPath.length + 1, -3)
+    let title = md.meta.title || getTitle(path)
+    let order = 99
+    if (priorityConfig && priorityConfig.has(title)) {
+      order = priorityConfig.get(title)
+    }
     return {
       path,
       order: path === '' ? 0 : order,
-      title: title || getTitle(path)
+      title: title
     }
   })
+  // console.log('before orderBy: ', files)
   return orderBy(files, ['order', 'path']).map(file => {
     // console.log('after orderBy: ', file)
-    return [file.path, file.title]
+    return [encodeURI(file.path), file.title]
   })
 
 }
@@ -86,8 +101,6 @@ const side = function (baseDir, {
 } = {}, relativeDir = '', currentLevel = 1) {
   const fileLinks = getChildren(baseDir, relativeDir, currentLevel > maxLevel)
   // if (fs.lstatSync(join(baseDir, relativeDir, 'README.md')).isFile)
-
-  // console.log('>>>>>>>>>>>>>.', join(baseDir, relativeDir), order)
   if (currentLevel <= maxLevel) {
     getDirectories(join(baseDir, relativeDir)).filter(subDir => !subDir.startsWith(navPrefix)).forEach(subDir => {
       const children = side(baseDir, { maxLevel, navPrefix }, join(relativeDir, subDir), currentLevel + 1)

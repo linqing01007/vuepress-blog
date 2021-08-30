@@ -1,12 +1,12 @@
-const sidebar = require('./sidebarMy')
+let sidebar = require('./sidebarMy')
 const path = require('path')
 const root = path.dirname(__dirname)
 // sidebar.shift()
 // console.log('>>>>>>>>>sidebar: ', sidebar)
-// sidebar = [
-//   { title: 'interview', children: [
-//     [ 'interview/cookie_session_token', 'cookie_session_token' ],
-//     [ 'interview/跨域', '跨域' ]
+// const sidebar = [
+//   { title: 'daily', children: [
+//     [ 'daily/class继承与es5继承的区别', 'class' ],
+//     [ 'daily/防抖与节流', '防抖与节流' ]
 //   ] },
 //   { title: 'vue3', children: [ [ 'vue3/lifehooks', 'lifehooks' ], [ 'vue3/setup', 'setup' ] ] }
 // ]
