@@ -108,17 +108,6 @@ def main():
         'version': rev
     }
     rsp = request.post('', data = data) # 将diff数据上传到服务器
-    # msg += 'repo: \n' + repo + 'files: \n' + str(files) + 'date: \n' + date + '\n' + 'log: \n' + log + '\n' \
-    #     + 'fileList: \n' + fileList + '\n' + 'diff: \n' + diff + '\n'
-    with open('./hooks/python.log', 'w') as f:
-        f.write('size: ' +  str(sys.getsizeof(data)) + '\n')
-        f.write('repo: \n' + repo)
-        f.write('files: \n' + str(files))
-        f.write('date: \n' + date + '\n')
-        f.write('log: \n' + log + '\n')
-        f.write('fileList: \n' + fileList + '\n')
-        f.write('author: \n' + author + '\n')
-        f.write('diff: \n' + str(diff) + '\n')
 ```
 
 ## 总结
