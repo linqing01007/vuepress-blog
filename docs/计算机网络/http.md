@@ -1,6 +1,6 @@
 ## Content-type
 
-Content-Type 指定 body 的媒体资源类型，如果是请求头，则代表请求体的资源类型，如果是响应头，则代表响应体的资源类型。
+<font color=green>Content-Type</font> 指定 body 的媒体资源类型，如果是请求头，则代表请求体的资源类型，如果是响应头，则代表响应体的资源类型。
 
 资源类型通过 MIME(Multipurpose Internet Mail Extensiions)进行标识。
 
