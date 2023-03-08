@@ -7,6 +7,36 @@ def index():
     return 'index'
 ```
 
+## 获取请求参数
+获取请求参数需通过请求对象 `request` 来获取
+```python
+from flask import request, Flask
+app = Flask(__name__)
+
+# 获取get请求参数
+@app.route('/get', methods=['GET'])
+def get():
+    xxx = request.args.get('xxx')
+    yyy = request.values.get('yyy')
+
+# post请求参数
+# 根据 Content-Type 进行处理
+
+# Content-Type 为 application/json
+request.get_data()  # 获取的是原始参数，接收的type是'bytes'的对象，如b{'name': 'test'}
+request.get_json()  # 获取的是序列化后的参数，一般不需要额外 用json.loads()来序列化
+request.json.get('xxx')  # 同get_json()
+
+# Content-Type 为 application/x-www-form-urlencoded， 表单的默认编码方式
+request.values.get('key')
+
+# Content-Type 为 multipart/form-data ,获取表单数据
+request.form.get('content') 
+request.form['content']
+
+```
+
+
 ## flask-sqlalchemy 扩展
 配置数据库，使用sqlsite协议进行链接，好处是不需要配置一个数据库服务器，python提供内置支持，适用于小应用。大应用应考虑用其他协议。
 ```python
