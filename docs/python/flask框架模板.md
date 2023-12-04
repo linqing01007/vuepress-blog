@@ -34,8 +34,53 @@ request.values.get('key')
 request.form.get('content') 
 request.form['content']
 
+# 获取文件
+request.files['key']
+
 ```
 
+## cookie
+### 设置cookie
+```python
+from flask import Flask, make_response
+# 使用 set_cookie设置
+@app.route('/set_cookie')
+def set_cookie():
+    resp = make_response('success')
+    resp.set_cookie('name', 'linqing')
+    # 设置有效期，单位：秒
+    resp.set_cookie('name', max_age=3600)
+    return resp
+
+# 使用响应头设置
+@app.route('/set_cookie')
+def set_cookie():
+    resp = make_response('success')
+    resp.headers["Set-Cookie"]="name=linqing; Expires=Sun, 07-Nov-2023 09:35:00 GMT; Max-Age=3600;Path=/"
+    return resp
+    return resp
+```
+
+### 获取cookie
+```python
+# 需要先设置再获取，或者浏览器前端设置
+from flask import request
+@app.route('/get_cookie')
+def get_cookie():
+    response = request.cookies.get('name')
+    return response
+```
+
+### 删除cookie
+```python
+from flask import make_response
+@app.route('/delete_cookie')
+def delete_cookie():
+    resp = make_response('del_success')
+    # 本质是让cookie过期
+    resp.delete_cookie('name')
+    return resp
+```
 
 ## flask-sqlalchemy 扩展
 配置数据库，使用sqlsite协议进行链接，好处是不需要配置一个数据库服务器，python提供内置支持，适用于小应用。大应用应考虑用其他协议。
