@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[34],{432:function(t,e,n){"use strict";n.r(e);var s=n(70),o=Object(s.a)({},(function(){var t=this.$createElement,e=this._self._c||t;return e("ContentSlotsDistributor",{attrs:{"slot-key":this.$parent.slotKey}},[e("p",[this._v("大部分逻辑基本与nodejs版本的一致，不同的只是对服务器返回的diff内容的处理逻辑")])])}),[],!1,null,null,null);e.default=o.exports}}]);
