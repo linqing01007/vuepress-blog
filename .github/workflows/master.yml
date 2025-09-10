@@ -19,14 +19,14 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Use Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: "14.x"
       # 缓存node_modules，用于加速node的后续的构建
       - name: Cache node modules
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         id: cache
         with:
           path: node_nodules
